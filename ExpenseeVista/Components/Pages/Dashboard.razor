@@ -4,15 +4,12 @@
 @using Microsoft.JSInterop
 @inject IJSRuntime JS
 @inject NavigationManager Navigation
-
 <div class="dashboard-container">
-    <!-- Main Content -->
     <div class="main-content">
         <h1 class="page-title">User Expense Tracker Dashboard</h1>
-
         <div class="summary-cards">
             <div class="card">
-                <div class="card-amount">$10000.00</div>
+                <div class="card-amount"></div>
                 <div class="card-label">Available balance until month ending</div>
                 <div class="card-details">
                     <span>Inflows: $13000</span>
@@ -33,7 +30,6 @@
         <div class="chart-section">
             <h2>Income Vs. Expenses Overview</h2>
             <div class="chart-container">
-                <!-- Chart placeholder - integrate with your preferred chart library -->
                 <canvas id="incomeExpensesChart"></canvas>
             </div>
         </div>

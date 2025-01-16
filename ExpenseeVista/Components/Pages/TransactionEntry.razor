@@ -1,6 +1,9 @@
 ﻿@page "/transaction"
+@using System
+@using System.Linq
+@using System.Collections.Generic
+@using ExpenseeVista.Service
 @inject NavigationManager Navigation
-
 <div class="page-container">
     <!-- Main Content -->
     <div class="main-content">
@@ -37,7 +40,7 @@
                     </div>
 
                     <div class="button-group">
-                        <button type="submit" class="btn-save">Save Income</button>
+                        <button type="submit" class="btn-save" @onclick="HandleIncomeSubmit">Save Income</button>
                         <button type="button" class="btn-cancel" @onclick="NavigateBack">Cancel</button>
                     </div>
                 </EditForm>
@@ -126,20 +129,20 @@
         border-radius: 4px;
     }
 
-    .form-card h2 {
-        margin: 0 0 1.5rem;
-        font-size: 1.25rem;
-        font-weight: normal;
-    }
+        .form-card h2 {
+            margin: 0 0 1.5rem;
+            font-size: 1.25rem;
+            font-weight: normal;
+        }
 
     .form-group {
         margin-bottom: 1rem;
     }
 
-    .form-group label {
-        display: block;
-        margin-bottom: 0.5rem;
-    }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
 
     .form-control {
         width: 100%;
@@ -185,41 +188,12 @@
         color: white;
     }
 
-    .btn-save:hover, .btn-cancel:hover {
-        opacity: 0.9;
-    }
+        .btn-save:hover, .btn-cancel:hover {
+            opacity: 0.9;
+        }
 </style>
 
-@code {
-    private TransactionModel incomeModel = new();
-    private TransactionModel expenseModel = new();
 
-    private void NavigateBack()
-    {
-        Navigation.NavigateTo("/dash");
-    }
-
-    private async Task HandleIncomeSubmit()
-    {
-        // Add your income saving logic here
-        NavigateBack();
-    }
-
-    private async Task HandleExpenseSubmit()
-    {
-        // Add your expense saving logic here
-        NavigateBack();
-    }
-
-    public class TransactionModel
-    {
-        public decimal Amount { get; set; }
-        public string Type { get; set; } = string.Empty;
-        public DateTime Date { get; set; } = DateTime.Today;
-        public string Notes { get; set; } = string.Empty;
-        public string CustomTags { get; set; } = string.Empty;
-    }
-}
 
 
 
