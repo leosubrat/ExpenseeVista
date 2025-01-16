@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using ExpenseeVista.Service;
+using ExpenseeVista.Service.Interface;
+using Microsoft.Extensions.Logging;
 
 namespace ExpenseeVista
 {
@@ -15,9 +17,10 @@ namespace ExpenseeVista
                 });
 
             builder.Services.AddMauiBlazorWebView();
+            builder.Services.AddScoped<iUserService, UserService>();
 
 #if DEBUG
-    		builder.Services.AddBlazorWebViewDeveloperTools();
+            builder.Services.AddBlazorWebViewDeveloperTools();
     		builder.Logging.AddDebug();
 #endif
 
