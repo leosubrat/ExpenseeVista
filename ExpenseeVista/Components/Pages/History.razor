@@ -1,0 +1,194 @@
+﻿@page "/history"
+
+<div class="page-container">
+    <div class="main-content">
+        <h1 class="page-title">Transaction History</h1>
+
+        <div class="overview-card">
+            <h2>Transaction History Overview</h2>
+
+            <div class="search-filters">
+                <div class="search-group">
+                    <label>Search:</label>
+                    <div class="search-box">
+                        <input type="text" @bind="searchQuery" class="form-control" />
+                        <button class="btn-search" @onclick="HandleSearch">Search</button>
+                    </div>
+                </div>
+
+                <div class="filters-group">
+                    <div class="filter-item">
+                        <label>Filters:</label>
+                        <select @bind="selectedType" class="form-control">
+                            <option value="">Type ▼</option>
+                            <option value="debit">Debit</option>
+                            <option value="credit">Credit</option>
+                            <option value="debt">Debt</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-item">
+                        <select @bind="selectedTags" class="form-control">
+                            <option value="">Tags ▼</option>
+                            <option value="food">Food</option>
+                            <option value="income">Income</option>
+                            <option value="loan">Loan</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="sort-group">
+                    <label>Sort by:</label>
+                    <select @bind="sortByDate" class="form-control">
+                        <option value="">Date ▼</option>
+                        <option value="asc">Oldest First</option>
+                        <option value="desc">Newest First</option>
+                    </select>
+                    <select @bind="sortByAmount" class="form-control">
+                        <option value="">Amount ▼</option>
+                        <option value="asc">Low to High</option>
+                        <option value="desc">High to Low</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="transaction-list">
+            <h2>Transaction List</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Title</th>
+                            <th>Amount</th>
+                            <th>Type</th>
+                            <th>Tags</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var transaction in transactions)
+                        {
+                            <tr>
+                                <td>@transaction.Date.ToShortDateString()</td>
+                                <td>@transaction.Title</td>
+                                <td>$@transaction.Amount.ToString("F2")</td>
+                                <td>@transaction.Type</td>
+                                <td>@transaction.Tags</td>
+                                <td>@transaction.Notes</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .page-container {
+        padding: 2rem;
+        background-color: white;
+    }
+
+    .page-title {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .overview-card {
+        background-color: #e0e0e0;
+        padding: 1.5rem;
+        border-radius: 4px;
+        margin-bottom: 2rem;
+    }
+
+    .overview-card h2 {
+        margin: 0 0 1rem;
+        font-size: 1.25rem;
+    }
+
+    .search-filters {
+        display: grid;
+        gap: 1rem;
+    }
+
+    .search-group {
+        display: grid;
+        gap: 0.5rem;
+    }
+
+    .search-box {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .filters-group {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+    }
+
+    .filter-item {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+    }
+
+    .sort-group {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+    }
+
+    .form-control {
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: white;
+    }
+
+    select.form-control {
+        min-width: 120px;
+    }
+
+    .btn-search {
+        padding: 0.5rem 1rem;
+        background-color: #333;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .btn-search:hover {
+        background-color: #444;
+    }
+
+    .table-container {
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: #e0e0e0;
+    }
+
+    th, td {
+        padding: 0.75rem;
+        text-align: left;
+        border-bottom: 1px solid #ccc;
+    }
+
+    th {
+        background-color: #d3d3d3;
+        font-weight: 600;
+    }
+
+    tr:hover {
+        background-color: #d3d3d3;
+    }
+</style>
+

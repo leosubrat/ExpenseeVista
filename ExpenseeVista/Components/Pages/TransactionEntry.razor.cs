@@ -58,7 +58,6 @@ namespace ExpenseeVista.Components.Pages
                 Date = DateTime.Now
             };
             transactionService.AddTransaction(transaction);
-
             ShowNotification("Income saved successfully!");
             incomeModel = new ExpenseeVista.Model.Transaction();
             Navigation.NavigateTo("/history");
