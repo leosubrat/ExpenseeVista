@@ -1,33 +1,165 @@
 ﻿@page "/login"
+@using ExpenseeVista.Model
 @using ExpenseeVista.Service.Interface
 @inject NavigationManager Nav
 @inject iUserService UserService
 
-<div class="form-login">
-    <form class="text-center" @onsubmit="HandleLogin">
-        <img class="mb-4" src="/appicon.png" alt="" height="72">
-        <h1 class="h3 mb-3 fw-normal">Please Login</h1>
+<div class="login-container">
+    <h1 class="welcome-title">Welcome to Expense Vista!</h1>
 
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control" @bind="Users.Username" placeholder="Username" />
-            <label for="floatingInput">Username</label>
+    <div class="login-card">
+        <div class="login-header">
+            <h2>Login</h2>
+            <p>Sign in to your account</p>
         </div>
 
-        <!-- Password Input -->
-        <div class="form-floating mb-3">
-            <input type="password" class="form-control" @bind="Users.Password" placeholder="Password" />
-            <label for="floatingPassword">Password</label>
-        </div>
+        <form class="login-form" @onsubmit="HandleLogin">
+            <!-- Username Input -->
+            <div class="form-group">
+                <input type="text"
+                       class="form-control @(IsFieldInvalid(User.Username) ? "is-invalid" : "")"
+                       @bind="User.Username"
+                       @bind:event="oninput"
+                       placeholder="Username" />
+            </div>
 
-        @if (!string.IsNullOrEmpty(ErrorMessage))
-        {
-            <div class="alert alert-danger">@ErrorMessage</div>
-        }
-        <button class="btn btn-lg btn-primary">
-            Login
-        </button>
-        <button class="btn btn-lg btn-secondary" @onclick="HandleRegister">
-            Register
-        </button>
-    </form>
+            <!-- Password Input -->
+            <div class="form-group">
+                <input type="password"
+                       class="form-control @(IsFieldInvalid(User.Password) ? "is-invalid" : "")"
+                       @bind="User.Password"
+                       @bind:event="oninput"
+                       placeholder="Password" />
+            </div>
+
+            <!-- Currency Dropdown -->
+            <div class="form-group">
+                <select class="form-control" @bind="User.PreferredCurrency">
+                    <option value="" disabled selected>Preferred currency type</option>
+                    <option value="USD">USD - US Dollar</option>
+                    <option value="NPR">NPR - Nepalese Rupee</option>
+                    <option value="INR">INR - Indian Rupees</option>
+                </select>
+            </div>
+
+            @if (!string.IsNullOrEmpty(ErrorMessage))
+            {
+                <div class="alert alert-danger">@ErrorMessage</div>
+            }
+
+            <button type="submit" class="btn-login" disabled="@IsLoading">
+                @if (IsLoading)
+                {
+                    <span>Logging in...</span>
+                }
+                else
+                {
+                    <span>Login</span>
+                }
+            </button>
+        </form>
+    </div>
 </div>
+
+<style>
+    .login-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 1rem;
+        background-color: white;
+    }
+
+    .welcome-title {
+        font-size: 2rem;
+        font-weight: normal;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+    .login-card {
+        background-color: #e0e0e0;
+        border-radius: 4px;
+        padding: 2rem;
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .login-header {
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+
+        .login-header h2 {
+            font-size: 1.5rem;
+            margin: 0;
+            font-weight: normal;
+        }
+
+        .login-header p {
+            margin: 0.5rem 0 0;
+            color: #666;
+        }
+
+    .login-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 1rem;
+        background-color: white;
+    }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #999;
+        }
+
+    select.form-control {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8.825L1.175 4 2.238 2.938 6 6.7l3.763-3.762L10.825 4z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 0.75rem center;
+        padding-right: 2rem;
+    }
+
+    .btn-login {
+        width: 100%;
+        padding: 0.75rem;
+        background-color: #808080;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+        .btn-login:hover:not(:disabled) {
+            background-color: #666;
+        }
+
+        .btn-login:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+    .alert-danger {
+        background-color: #fee;
+        color: #c00;
+        padding: 0.75rem;
+        border-radius: 4px;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+
+</style>
+

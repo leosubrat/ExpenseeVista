@@ -4,25 +4,53 @@ namespace ExpenseeVista.Components.Pages
 {
     public partial class Login
     {
+        private User User { get; set; } = new User();
         private string? ErrorMessage;
+        private bool IsLoading = false;
+        private bool WasValidated = false;
 
-        public User Users { get; set; } = new();
-
-        private async void HandleLogin()
+        private async Task HandleLogin()
         {
-            if (UserService.Login(Users))
+            WasValidated = true;
+
+            if (string.IsNullOrWhiteSpace(User.Username) ||
+                string.IsNullOrWhiteSpace(User.Password) ||
+                string.IsNullOrWhiteSpace(User.PreferredCurrency))
             {
-                Nav.NavigateTo("/home");
+                ErrorMessage = "Please fill in all fields";
+                return;
             }
-            else
+
+            try
             {
-                ErrorMessage = "Invalid username or password.";
+                IsLoading = true;
+                ErrorMessage = null;
+
+                if (await Task.Run(() => UserService.Login(User)))
+                {
+
+                    Nav.NavigateTo("/home");
+                }
+
+                else
+                {
+                    ErrorMessage = "Please enter valid username, password and prefered currency type";
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = "An error occurred. Please try again.";
+                Console.WriteLine($"Login error: {ex.Message}");
+            }
+            finally
+            {
+                IsLoading = false;
             }
         }
 
-        private async void HandleRegister()
+        private bool IsFieldInvalid(string value)
         {
-            Nav.NavigateTo("/register");
+            return WasValidated && string.IsNullOrWhiteSpace(value);
         }
     }
 }

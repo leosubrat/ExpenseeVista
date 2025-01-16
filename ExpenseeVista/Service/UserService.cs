@@ -1,20 +1,17 @@
-﻿using ExpenseeVista.Abstractions;
+﻿
+using ExpenseeVista.Abstractions;
 using ExpenseeVista.Model;
 using ExpenseeVista.Service.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ExpenseeVista.Service
+namespace ExpenseVista.Service
 {
     public class UserService : UserBase, iUserService
     {
         private List<User> _users;
 
-        public const string SeedUsername = "admin";
-        public const string SeedPassword = "password";
+        public const string SeedUsername = "Subrat";
+        public const string SeedPassword = "Thapa";
+        public const string SeedCurrency = "USD - US Dollar";
+        private User _currentUser;
 
         public UserService()
         {
@@ -22,20 +19,35 @@ namespace ExpenseeVista.Service
 
             if (!_users.Any())
             {
-                _users.Add(new User { Username = SeedUsername, Password = SeedPassword });
+                _users.Add(new User { Username = SeedUsername, Password = SeedPassword, PreferredCurrency = SeedCurrency });
                 SaveUsers(_users);
             }
         }
 
-        public bool Login(User users)
+        public bool Login(User user)
         {
-            if (string.IsNullOrEmpty(users.Username) || string.IsNullOrEmpty(users.Password))
+            if (string.IsNullOrEmpty(user.Username) ||
+                string.IsNullOrEmpty(user.Password) ||
+                string.IsNullOrEmpty(user.PreferredCurrency))
             {
                 return false;
             }
-            return _users.Any(u => u.Username == users.Username && u.Password == users.Password);
 
+            if (!user.PreferredCurrency.Equals("USD", StringComparison.OrdinalIgnoreCase))
+            {
+                return false;
+            }
 
+            var validUser = _users.FirstOrDefault(u => u.Username == user.Username &&
+                                                       u.Password == user.Password &&
+                                                       u.PreferredCurrency.Equals("USD - US Dollar", StringComparison.OrdinalIgnoreCase));
+            if (validUser != null)
+            {
+                _currentUser = validUser; 
+                return true;
+            }
+
+            return false;
         }
     }
 }
