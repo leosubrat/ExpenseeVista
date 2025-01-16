@@ -1,0 +1,132 @@
+﻿@page "/dash"
+@using ExpenseeVista.Model
+@using ExpenseeVista.Service.Interface
+@using Microsoft.JSInterop
+@inject IJSRuntime JS
+@inject NavigationManager Navigation
+
+<div class="dashboard-container">
+    <!-- Main Content -->
+    <div class="main-content">
+        <h1 class="page-title">User Expense Tracker Dashboard</h1>
+
+        <div class="summary-cards">
+            <div class="card">
+                <div class="card-amount">$10000.00</div>
+                <div class="card-label">Available balance until month ending</div>
+                <div class="card-details">
+                    <span>Inflows: $13000</span>
+                    <span>Outflows: $3000</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-amount">$3000.00</div>
+                <div class="card-label">Spent money</div>
+            </div>
+
+            <div class="card">
+                <div class="card-amount">$5000.00</div>
+                <div class="card-label">Pending debts</div>
+            </div>
+        </div>
+        <div class="chart-section">
+            <h2>Income Vs. Expenses Overview</h2>
+            <div class="chart-container">
+                <!-- Chart placeholder - integrate with your preferred chart library -->
+                <canvas id="incomeExpensesChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .dashboard-container {
+        display: flex;
+        min-height: 100vh;
+    }
+    .app-title {
+        background-color: #666;
+        color: white;
+        padding: 1rem;
+        font-size: 1.25rem;
+    }
+    .main-content {
+        flex: 1;
+        padding: 2rem;
+        background-color: white;
+    }
+
+    .page-title {
+        margin: 0 0 2rem;
+        font-size: 1.5rem;
+        font-weight: normal;
+    }
+
+    .summary-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .card {
+        background-color: #e0e0e0;
+        padding: 1.5rem;
+        border-radius: 4px;
+    }
+
+    .card-amount {
+        font-size: 1.75rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .card-label {
+        color: #666;
+        margin-bottom: 0.5rem;
+    }
+
+    .card-details {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        color: #666;
+        font-size: 0.875rem;
+    }
+
+    .action-button {
+        background-color: #666;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 100%;
+    }
+
+    .action-button:hover {
+        background-color: #555;
+    }
+
+    .chart-section {
+        background-color: white;
+        padding: 1rem;
+        border-radius: 4px;
+    }
+
+    .chart-section h2 {
+        margin: 0 0 1rem;
+        font-size: 1.25rem;
+        font-weight: normal;
+    }
+
+    .chart-container {
+        height: 400px;
+        border: 1px solid #e0e0e0;
+        padding: 1rem;
+    }
+</style>
+
+
+
+

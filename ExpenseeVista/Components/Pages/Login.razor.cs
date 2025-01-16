@@ -29,7 +29,7 @@ namespace ExpenseeVista.Components.Pages
                 if (await Task.Run(() => UserService.Login(User)))
                 {
 
-                    Nav.NavigateTo("/home");
+                    Nav.NavigateTo("/dash");
                 }
 
                 else
